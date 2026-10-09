@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>systems.porto</groupId>
+        <artifactId>registry-plugins</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>product-crud</artifactId>
+    <version>1.0.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>systems.porto</groupId>
+            <artifactId>porto-api-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>systems.porto</groupId>
+            <artifactId>registry-dtos</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>systems.porto</groupId>
+            <artifactId>business</artifactId>
+            <version>${porto.core.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>systems.porto</groupId>
+            <artifactId>context</artifactId>
+            <version>${porto.core.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>systems.porto</groupId>
+            <artifactId>adapters</artifactId>
+            <version>${porto.core.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>17</source>
+                    <target xmlns:if="ant:if">17</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.32</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target xmlns:if="ant:if">
+                            <condition property="plugin.deploy.ready">
+                                <and>
+                                    <not><equals arg1="${porto.api.home}" arg2="" trim="true"/></not>
+                                    <or>
+                                        <equals arg1="${porto.api.application}" arg2="registry"/>
+                                        <and>
+                                            <equals arg1="${porto.api.application}" arg2="" trim="true"/>
+                                            <contains string="${porto.api.home}" substring="registry-api-deploy"/>
+                                        </and>
+                                    </or>
+                                </and>
+                            </condition>
+                                <mkdir dir="${porto.api.home}/plugins/processors/registry" if:set="plugin.deploy.ready"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="${porto.api.home}/plugins/processors/registry/${project.build.finalName}.jar" if:set="plugin.deploy.ready"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

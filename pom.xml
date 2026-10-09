@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>systems.porto</groupId>
+        <artifactId>porto-api-plugins</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>registry-plugins</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>dtos/registry-dtos</module>
+        <module>datasources/registry-db</module>
+        <module>client-adapters/product-jdbc</module>
+        <module>client-adapters/category-jdbc</module>
+        <module>processors/product-crud</module>
+        <module>processors/category-crud</module>
+        <module>entry-adapters/product-rest</module>
+        <module>entry-adapters/category-rest</module>
+    </modules>
+</project>
